@@ -182,13 +182,15 @@ document.head.appendChild(markedScript);
             align-self: flex-start;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
-        .n8n-chat-widget .chat-message.bot {
-        background: var(--chat--color-background);
-        border: 1px solid rgba(133, 79, 255, 0.2);
-        color: var(--chat--color-font);
-        align-self: flex-start;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-       }
+        .n8n-chat-widget .chat-message.typing-indicator {
+           font-style: italic;
+           color: #999;
+           background: none;
+           box-shadow: none;
+           border: none;
+           margin: 8px 0;
+           align-self: flex-start;
+        }
 
         .n8n-chat-widget .chat-input {
             padding: 16px;
