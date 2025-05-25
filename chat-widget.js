@@ -191,6 +191,33 @@ document.head.appendChild(markedScript);
            margin: 8px 0;
            align-self: flex-start;
         }
+        .n8n-chat-widget .chat-message.typing-indicator .dots {
+    display: inline-flex;
+    gap: 2px;
+    margin-left: 4px;
+}
+
+.n8n-chat-widget .chat-message.typing-indicator .dots span {
+    animation: blink 1.2s infinite;
+    opacity: 0;
+    font-weight: bold;
+}
+
+.n8n-chat-widget .chat-message.typing-indicator .dots span:nth-child(1) {
+    animation-delay: 0s;
+}
+.n8n-chat-widget .chat-message.typing-indicator .dots span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+.n8n-chat-widget .chat-message.typing-indicator .dots span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes blink {
+    0%   { opacity: 0; }
+    50%  { opacity: 1; }
+    100% { opacity: 0; }
+}
 
         .n8n-chat-widget .chat-input {
             padding: 16px;
@@ -479,7 +506,7 @@ async function sendMessage(message) {
     // ✅ Add typing indicator
     const typingIndicatorDiv = document.createElement('div');
     typingIndicatorDiv.className = 'chat-message typing-indicator';
-    typingIndicatorDiv.textContent = 'Che Guevara is typing...';
+    typingIndicatorDiv.innerHTML = 'Che Guevara is typing<span class="dots"><span>.</span><span>.</span><span>.</span></span>';
     messagesContainer.appendChild(typingIndicatorDiv);
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
