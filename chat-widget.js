@@ -449,43 +449,56 @@ async function startNewConversation() {
     }
 }
 
-    async function sendMessage(message) {
-        const messageData = {
-            action: "sendMessage",
-            sessionId: currentSessionId,
-            route: config.webhook.route,
-            chatInput: message,
-            metadata: {
-                userId: ""
-            }
-        };
-
-        const userMessageDiv = document.createElement('div');
-        userMessageDiv.className = 'chat-message user';
-        userMessageDiv.textContent = message;
-        messagesContainer.appendChild(userMessageDiv);
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-
-        try {
-            const response = await fetch(config.webhook.url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(messageData)
-            });
-            
-            const data = await response.json();
-            
-            const botMessageDiv = document.createElement('div');
-            botMessageDiv.className = 'chat-message bot';
-            botMessageDiv.innerHTML = marked.parse(Array.isArray(data) ? data[0].output : data.output || '');
-            messagesContainer.appendChild(botMessageDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        } catch (error) {
-            console.error('Error:', error);
+async function sendMessage(message) {
+    const messageData = {
+        action: "sendMessage",
+        sessionId: currentSessionId,
+        route: config.webhook.route,
+        chatInput: message,
+        metadata: {
+            userId: ""
         }
+    };
+
+    // Add user message
+    const userMessageDiv = document.createElement('div');
+    userMessageDiv.className = 'chat-message user';
+    userMessageDiv.textContent = message;
+    messagesContainer.appendChild(userMessageDiv);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+    // ✅ Add typing indicator
+    const typingIndicatorDiv = document.createElement('div');
+    typingIndicatorDiv.className = 'chat-message typing-indicator';
+    typingIndicatorDiv.textContent = 'Che Guevara is typing...';
+    messagesContainer.appendChild(typingIndicatorDiv);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+    try {
+        const response = await fetch(config.webhook.url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(messageData)
+        });
+
+        const data = await response.json();
+
+        // ✅ Remove typing indicator
+        typingIndicatorDiv.remove();
+
+        // Add bot message with Markdown
+        const botMessageDiv = document.createElement('div');
+        botMessageDiv.className = 'chat-message bot';
+        botMessageDiv.innerHTML = marked.parse(Array.isArray(data) ? data[0].output : data.output || '');
+        messagesContainer.appendChild(botMessageDiv);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    } catch (error) {
+        console.error('Error:', error);
+        typingIndicatorDiv.remove(); // Clean up in case of failure
     }
+}
 
     newChatBtn.addEventListener('click', startNewConversation);
     
