@@ -182,6 +182,13 @@ document.head.appendChild(markedScript);
             align-self: flex-start;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
+        .n8n-chat-widget .chat-message.bot {
+        background: var(--chat--color-background);
+        border: 1px solid rgba(133, 79, 255, 0.2);
+        color: var(--chat--color-font);
+        align-self: flex-start;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+       }
 
         .n8n-chat-widget .chat-input {
             padding: 16px;
